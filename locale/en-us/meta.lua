@@ -12,6 +12,8 @@ cgopt.stop          =
 'Stops automatic execution.'
 cgopt.restart       =
 'Restarts automatic execution.'
+cgopt.restartMS     =
+'Also performs a full garbage-collection cycle.'
 cgopt.count         =
 'Returns the total memory in Kbytes.'
 cgopt.step          =
@@ -29,7 +31,8 @@ cgopt.isrunning     =
 
 collectgarbage      =
 'This function is a generic interface to the garbage collector. It performs different functions according to its first argument, `opt`.'
-
+collectgarbageMS    =
+'This function is a generic interface to the garbage collector. You can supply an `opt` string and an `arg` integer, but they go mostly ignored, any valid `opt` will just do a garbage-collection cycle, the rest do nothing.'
 dofile              =
 'Opens the named file and executes its content as a Lua chunk. When called without arguments, `dofile` executes the content of the standard input (`stdin`). Returns all values returned by the chunk. In case of errors, `dofile` propagates the error to its caller. (That is, `dofile` does not run in protected mode.)'
 
@@ -42,6 +45,27 @@ Usually, `error` adds some information about the error position at the beginning
 
 _G                  =
 'A global variable (not a function) that holds the global environment (see §2.2). Lua itself does not use this variable; changing its value does not affect any environment, nor vice versa.'
+
+_MOONSHARP          =
+'Table with MoonSharp data.'
+_MOONSHARP.version  =
+'MoonSharp version.'
+_MOONSHARP.luacompat=
+'MoonSharp Lua version.'
+_MOONSHARP.platform =
+'MoonSharp platform name.'
+_MOONSHARP.is_aot   =
+'True if on an ahead-of-time compilation platform.'
+_MOONSHARP.is_unity =
+'True if running on Unity.'
+_MOONSHARP.is_mono  =
+'True if running on Mono.'
+_MOONSHARP.is_clr4  =
+'True if running on .NET 4.'
+_MOONSHARP.is_pcl   =
+'True if running as a portable class library.'
+_MOONSHARP.banner   =
+'MoonSharp REPL banner containing version and copyright info.'
 
 getfenv             =
 'Returns the current environment in use by the function. `f` can be a Lua function or a number that specifies the function at that stack level.'
@@ -74,8 +98,18 @@ Loads a chunk.
 If `chunk` is a string, the chunk is this string. If `chunk` is a function, `load` calls it repeatedly to get the chunk pieces. Each call to `chunk` must return a string that concatenates with previous results. A return of an empty string, `nil`, or no value signals the end of the chunk.
 ]]
 
+loadsafe            =
+[[
+Same as `load`, except `env` defaults to `_ENV`, instead of `_G`.
+]]
+
 loadfile            =
 'Loads a chunk from file `filename` or from the standard input, if no file name is given.'
+
+loadfilesafe        =
+[[
+Same as `loadfile`, except `env` defaults to `_ENV`, instead of `_G`.
+]]
 
 loadstring          =
 'Loads a chunk from the given string.'
@@ -186,6 +220,12 @@ Returns the elements from the given `list`. This function is equivalent to
 ```
 ]]
 
+pack                =
+[[
+Same as `table.pack`.
+Returns a new table with all arguments stored into keys `1`, `2`, etc. and with a field `"n"` with the total number of arguments.
+]]
+
 bit32               =
 ''
 bit32.arshift       =
@@ -272,6 +312,8 @@ debug                       =
 ''
 debug.debug                 =
 'Enters an interactive mode with the user, running each string that the user enters.'
+debug.debugMS               =
+'This function should enter an interactive debug mode for the user, but there\'s no way to input anything to it in CYF, so it leaves the engine frozen.'
 debug.getfenv               =
 'Returns the environment of object `o` .'
 debug.gethook               =
@@ -333,6 +375,8 @@ infowhat.n                  =
 '`name` and `namewhat`'
 infowhat.S                  =
 '`source`, `short_src`, `linedefined`, `lastlinedefined`, and `what`'
+infowhat.SMS                =
+'`source`, `short_src`, and `what`'
 infowhat.l                  =
 '`currentline`'
 infowhat.t                  =
@@ -688,6 +732,15 @@ string.unpack               =
 'Returns the values packed in string according to the format string `fmt` (see §6.4.2) .'
 string.upper                =
 'Returns a copy of this string with all lowercase letters changed to uppercase.'
+string.unicode              =
+'Similar to `string.byte()`, except it returns unicode codepoints of a given string/substring.'
+string.contains             =
+'Returns true if `str1` contains `str2`.'
+string.startsWith           =
+'Returns true if beginning of `str1` matches `str2`.'
+string.endsWith             =
+'Returns true if end of `str1` matches `str2`.'
+
 
 table                       =
 ''
@@ -739,6 +792,27 @@ table.clear                 =
 ```
 Please note this function is meant for very specific situations. In most cases it's better to replace the (usually single) link with a new table and let the GC do its work.
 ]]
+
+dynamic                     =
+'MoonSharp module for dynamic expression evaluation'
+dynamic.eval                =
+'Evaluates a string expression or a prepared expression object via `dynamic.prepare`'
+dynamic.prepare             =
+'Prepares an expression object from a string for use with `dynamic.eval` for faster execution'
+
+json                        =
+[[
+MoonSharp module which for table-JSON string conversion.
+Provides special `json.null()` value for JSON entries containing nulls.
+]]
+json.parse                  =
+'Converts a JSON string into a table.'
+json.serialize              =
+'Converts a table into a JSON string.'
+json.isnull                 =
+'Checks if `val` is a null value. See `json.null()`.'
+json.null                   =
+'Returns a special null value for null entries in converted tables.'
 
 utf8                        =
 ''
