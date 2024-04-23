@@ -159,4 +159,35 @@ function string.unpack(fmt, s, pos) end
 ---@nodiscard
 function string.upper(s) end
 
+---#if MS then
+---#DES 'string.unicode'
+---@param s string
+---@param i? integer
+---@param j? integer
+---@return integer ...
+---@nodiscard
+function string.unicode(s, i, j) end
+
+---#DES 'string.contains'
+---@param str1 string
+---@param str2 string
+---@return boolean
+---@nodiscard
+function string.contains(str1, str2) end
+
+---#DES 'string.startsWith'
+---@param str1 string
+---@param str2 string
+---@return boolean
+---@nodiscard
+function string.startsWith(str1, str2) end
+
+---#DES 'string.endsWith'
+---@param str1 string
+---@param str2 string
+---@return boolean
+---@nodiscard
+function string.endsWith(str1, str2) end
+---#end
+
 return string

@@ -15,6 +15,9 @@ function assert(v, message, ...) end
 
 ---@alias gcoptions
 ---|>"collect"      # ---#DESTAIL 'cgopt.collect'
+---#if MS then
+---| "restart"      # ---#DESTAIL 'cgopt.restartMS'
+---#else
 ---| "stop"         # ---#DESTAIL 'cgopt.stop'
 ---| "restart"      # ---#DESTAIL 'cgopt.restart'
 ---| "count"        # ---#DESTAIL 'cgopt.count'
@@ -27,6 +30,7 @@ function assert(v, message, ...) end
 ---| "setpause"     # ---#DESTAIL 'cgopt.setpause'
 ---| "setstepmul"   # ---#DESTAIL 'cgopt.setstepmul'
 ---#end
+---#end
 
 ---#if VERSION >= 5.4 then
 ---#DES 'collectgarbage'
@@ -35,7 +39,11 @@ function assert(v, message, ...) end
 ---@return any
 function collectgarbage(opt, ...) end
 ---#else
+---#if MS then
+---#DES 'collectgarbageMS'
+---#else
 ---#DES 'collectgarbage'
+---#end
 ---@param opt? gcoptions
 ---@param arg? integer
 ---@return any
@@ -55,6 +63,41 @@ function error(message, level) end
 ---#DES '_G'
 ---@class _G
 _G = {}
+
+---#if MS then
+---#DES '_MOONSHARP'
+---MOONSHARP
+_MOONSHARP = {}
+---#DES '_MOONSHARP.version'
+---MOONSHARP
+_MOONSHARP.version = "2.0.0.0"
+---#DES '_MOONSHARP.luacompt'
+---MOONSHARP
+_MOONSHARP.luacompat = "5.2"
+---#DES '_MOONSHARP.platform'
+---MOONSHARP
+_MOONSHARP.platform = "limited.unity.dll.mono.clr2"
+---#DES '_MOONSHARP.is_aot'
+---MOONSHARP
+--@type boolean
+_MOONSHARP.is_aot = nil
+---#DES '_MOONSHARP.is_unity'
+---MOONSHARP
+_MOONSHARP.is_unity = true
+---#DES '_MOONSHARP.is_mono'
+---MOONSHARP
+_MOONSHARP.is_mono = true
+---#DES '_MOONSHARP.is_clr4'
+---MOONSHARP
+_MOONSHARP.is_clr4 = false
+---#DES '_MOONSHARP.is_pcl'
+---MOONSHARP
+_MOONSHARP.is_pcl = false
+---#DES '_MOONSHARP.banner'
+---MOONSHARP
+--@type string
+_MOONSHARP.banner = nil
+---#end
 
 ---@version 5.1
 ---#DES 'getfenv'
@@ -119,6 +162,28 @@ function loadfile(filename) end
 ---@nodiscard
 function loadfile(filename, mode, env) end
 ---#end
+
+---#if MS then
+---#DES 'loadsafe'
+---@param chunk      string|function
+---@param chunkname? string
+---@param mode?      loadmode
+---@param env?       table
+---@return function?
+---@return string?   error_message
+---@nodiscard
+function loadsafe(chunk, chunkname, mode, env) end
+---#DES 'loadfilesafe'
+---MOONSHARP
+---@param filename? string
+---@param mode?     loadmode
+---@param env?      table
+---@return function?
+---@return string?  error_message
+---@nodiscard
+function loadfilesafe(filename, mode, env) end
+---#end
+
 
 ---@version 5.1
 ---#DES 'loadstring'
@@ -330,19 +395,21 @@ function xpcall(f, err) end
 function xpcall(f, msgh, arg1, ...) end
 ---#end
 
----@version 5.1
+---@version 5.1, MS
 ---#DES 'unpack'
 ---@generic T
----@param list T[]
+---@generic T1, T2, T3, T4, T5, T6, T7, T8, T9
+---@param list {[1]: T1, [2]: T2, [3]: T3, [4]: T4, [5]: T5, [6]: T6, [7]: T7, [8]: T8, [9]: T9 }
+---@return T1, T2, T3, T4, T5, T6, T7, T8, T9
 ---@param i?   integer
 ---@param j?   integer
 ---@return T   ...
 ---@nodiscard
 function unpack(list, i, j) end
 
----@version 5.1
----@generic T1, T2, T3, T4, T5, T6, T7, T8, T9
----@param list {[1]: T1, [2]: T2, [3]: T3, [4]: T4, [5]: T5, [6]: T6, [7]: T7, [8]: T8, [9]: T9 }
----@return T1, T2, T3, T4, T5, T6, T7, T8, T9
+---#if MS then
+---#DES 'pack'
+---@return any[]
 ---@nodiscard
-function unpack(list) end
+function pack(...) end
+---#end

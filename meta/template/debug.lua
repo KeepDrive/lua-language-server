@@ -5,28 +5,34 @@
 debug = {}
 
 ---@class debuginfo
----@field name            string
+---#if not MS then
 ---@field namewhat        string
----@field source          string
----@field short_src       string
 ---@field linedefined     integer
 ---@field lastlinedefined integer
----@field what            string
----@field currentline     integer
 ---@field istailcall      boolean
----@field nups            integer
 ---#if VERSION >= 5.2 or JIT then
 ---@field nparams         integer
 ---@field isvararg        boolean
 ---#end
+---@field activelines     table
+---#end
+---@field name            string
+---@field source          string
+---@field short_src       string
+---@field what            string
+---@field currentline     integer
+---@field nups            integer
 ---@field func            function
 ---#if VERSION >= 5.4 then
 ---@field ftransfer       integer
 ---@field ntransfer       integer
 ---#end
----@field activelines     table
 
+---#if MS then
 ---#DES 'debug.debug'
+---#else
+---#DES 'debug.debugMS'
+---#end
 function debug.debug() end
 
 ---@version 5.1
@@ -46,10 +52,15 @@ function debug.gethook(co) end
 
 ---@alias infowhat string
 ---|+"n"     # ---#DESTAIL 'infowhat.n'
+---#if MS then
+---|+"S"     # ---#DESTAIL 'infowhat.SMS'
+---#else
 ---|+"S"     # ---#DESTAIL 'infowhat.S'
----|+"l"     # ---#DESTAIL 'infowhat.l'
 ---|+"t"     # ---#DESTAIL 'infowhat.t'
----#if VERSION <= 5.1 and not JIT then
+---|+"L"     # ---#DESTAIL 'infowhat.L'
+---#end
+---|+"l"     # ---#DESTAIL 'infowhat.l'
+---#if VERSION <= 5.1 or MS and not JIT then
 ---|+"u" # ---#DESTAIL 'infowhat.u<5.1'
 ---#else
 ---|+"u" # ---#DESTAIL 'infowhat.u>5.2'
@@ -58,7 +69,6 @@ function debug.gethook(co) end
 ---#if VERSION >= 5.4 then
 ---|+"r"     # ---#DESTAIL 'infowhat.r'
 ---#end
----|+"L"     # ---#DESTAIL 'infowhat.L'
 
 ---#DES 'debug.getinfo'
 ---@overload fun(f: integer|function, what?: infowhat):debuginfo
