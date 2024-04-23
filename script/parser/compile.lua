@@ -1095,7 +1095,7 @@ local function parseShortString()
                         type    = 'ERR_ESC',
                         start   = left,
                         finish  = left + 4,
-                        version = {'Lua 5.2', 'Lua 5.3', 'Lua 5.4', 'LuaJIT'},
+                        version = {'Lua 5.2', 'Lua 5.3', 'Lua 5.4', 'LuaJIT', 'LuaMS'},
                         info = {
                             version = State.version,
                         }
@@ -3253,7 +3253,7 @@ local function parseLabel()
             type   = 'UNSUPPORT_SYMBOL',
             start  = left,
             finish = lastRightPosition(),
-            version = {'Lua 5.2', 'Lua 5.3', 'Lua 5.4', 'LuaJIT'},
+            version = {'Lua 5.2', 'Lua 5.3', 'Lua 5.4', 'LuaJIT', 'LuaMS'},
             info = {
                 version = State.version,
             }

@@ -365,6 +365,8 @@ HOVER_DOCUMENT_LUA54    =
 'http://www.lua.org/manual/5.4/manual.html#{}'
 HOVER_DOCUMENT_LUAJIT   =
 'http://www.lua.org/manual/5.1/manual.html#{}'
+HOVER_DOCUMENT_LUAMS    =
+'http://www.lua.org/manual/5.2/manual.html#{}'
 HOVER_NATIVE_DOCUMENT_LUA51     =
 'command:extension.lua.doc?["en-us/51/manual.html/{}"]'
 HOVER_NATIVE_DOCUMENT_LUA52     =
@@ -375,6 +377,8 @@ HOVER_NATIVE_DOCUMENT_LUA54     =
 'command:extension.lua.doc?["en-us/54/manual.html/{}"]'
 HOVER_NATIVE_DOCUMENT_LUAJIT    =
 'command:extension.lua.doc?["en-us/51/manual.html/{}"]'
+HOVER_NATIVE_DOCUMENT_LUAMS     =
+'command:extension.lua.doc?["en-us/52/manual.html/{}"]'
 HOVER_MULTI_PROTOTYPE      =
 '({} prototypes)'
 HOVER_STRING_BYTES         =

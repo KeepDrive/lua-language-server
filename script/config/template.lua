@@ -184,12 +184,13 @@ end)
 
 ---@format disable-next
 local template = {
-    ['Lua.runtime.version']                 = Type.String >> 'Lua 5.4' << {
+    ['Lua.runtime.version']                 = Type.String >> 'LuaMS' << {
                                                 'Lua 5.1',
                                                 'Lua 5.2',
                                                 'Lua 5.3',
                                                 'Lua 5.4',
                                                 'LuaJIT',
+                                                'LuaMS',
                                             },
     ['Lua.runtime.path']                    = Type.Array(Type.String) >> {
                                                 "?.lua",
