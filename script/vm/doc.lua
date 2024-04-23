@@ -95,6 +95,7 @@ function vm.getValidVersions(doc)
         ['Lua 5.3'] = false,
         ['Lua 5.4'] = false,
         ['LuaJIT']  = false,
+        ['LuaMS']  = false,
     }
     for _, version in ipairs(doc.versions) do
         if version.ge and type(version.version) == 'number' then
@@ -115,10 +116,15 @@ function vm.getValidVersions(doc)
             valids[('Lua %.1f'):format(version.version)] = true
         elseif 'JIT' == version.version then
             valids['LuaJIT'] = true
+        elseif 'MS' == version.version then
+            valids['LuaMS'] = true
         end
     end
     if valids['Lua 5.1'] then
         valids['LuaJIT'] = true
+    end
+    if valids['Lua 5.2'] then
+        valids['LuaMS'] = true
     end
     doc._validVersions = valids
     return valids

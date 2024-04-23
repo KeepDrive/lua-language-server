@@ -33,6 +33,8 @@ local function getDocFormater(uri)
             return 'HOVER_NATIVE_DOCUMENT_LUA54'
         elseif version == 'LuaJIT' then
             return 'HOVER_NATIVE_DOCUMENT_LUAJIT'
+        elseif version == 'LuaMS' then
+            return 'HOVER_NATIVE_DOCUMENT_LUAMS'
         end
     else
         if version == 'Lua 5.1' then
@@ -45,6 +47,8 @@ local function getDocFormater(uri)
             return 'HOVER_DOCUMENT_LUA54'
         elseif version == 'LuaJIT' then
             return 'HOVER_DOCUMENT_LUAJIT'
+        elseif version == 'LuaMS' then
+            return 'HOVER_DOCUMENT_LUAMS'
         end
     end
 end
@@ -105,19 +109,26 @@ local function compileSingleMetaDoc(uri, script, metaLang, status)
     end
     middleBuf[#middleBuf+1] = ('PUSH [===[%s]===]'):format(script:sub(last))
     local middleScript = table.concat(middleBuf, '\n')
-    local version, jit
+    local version, jit, ms
     if config.get(uri, 'Lua.runtime.version') == 'LuaJIT' then
         version = 5.1
         jit = true
+        ms = false
+    elseif config.get(uri, 'Lua.runtime.version') == 'LuaMS' then
+        version = 5.2
+        jit = false
+        ms = true
     else
         version = tonumber(config.get(uri, 'Lua.runtime.version'):sub(-3)) or 5.4
         jit = false
+        ms = false
     end
 
     local disable = false
     local env = setmetatable({
         VERSION = version,
         JIT     = jit,
+        MS      = ms,
         PUSH    = function (text)
             compileBuf[#compileBuf+1] = text
         end,
