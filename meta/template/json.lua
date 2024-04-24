@@ -1,4 +1,4 @@
----#if not MS then DISABLE() end
+---#if not CYF then DISABLE() end
 ---@meta json
 
 ---#DES 'json'

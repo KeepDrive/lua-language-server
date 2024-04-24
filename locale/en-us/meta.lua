@@ -12,7 +12,7 @@ cgopt.stop          =
 'Stops automatic execution.'
 cgopt.restart       =
 'Restarts automatic execution.'
-cgopt.restartMS     =
+cgopt.restartCYF    =
 'Also performs a full garbage-collection cycle.'
 cgopt.count         =
 'Returns the total memory in Kbytes.'
@@ -31,7 +31,7 @@ cgopt.isrunning     =
 
 collectgarbage      =
 'This function is a generic interface to the garbage collector. It performs different functions according to its first argument, `opt`.'
-collectgarbageMS    =
+collectgarbageCYF   =
 'This function is a generic interface to the garbage collector. You can supply an `opt` string and an `arg` integer, but they go mostly ignored, any valid `opt` will just do a garbage-collection cycle, the rest do nothing.'
 dofile              =
 'Opens the named file and executes its content as a Lua chunk. When called without arguments, `dofile` executes the content of the standard input (`stdin`). Returns all values returned by the chunk. In case of errors, `dofile` propagates the error to its caller. (That is, `dofile` does not run in protected mode.)'
@@ -150,7 +150,7 @@ Receives any number of arguments and prints their values to `stdout`, converting
 The function print is not intended for formatted output, but only as a quick way to show a value, for instance for debugging. For complete control over the output, use $string.format and $io.write.
 ]]
 
-printMS             =
+printCYF            =
 'Prints arguments to `stdout`, but `stdout` is unavailable in CYF, if you want to write text to the debugger use `DEBUG(...)` instead.'
 
 rawequal            =
@@ -315,7 +315,7 @@ debug                       =
 ''
 debug.debug                 =
 'Enters an interactive mode with the user, running each string that the user enters.'
-debug.debugMS               =
+debug.debugCYF              =
 'This function should enter an interactive debug mode for the user, but there\'s no way to input anything to it in CYF, so it leaves the engine frozen.'
 debug.getfenv               =
 'Returns the environment of object `o` .'
@@ -378,7 +378,7 @@ infowhat.n                  =
 '`name` and `namewhat`'
 infowhat.S                  =
 '`source`, `short_src`, `linedefined`, `lastlinedefined`, and `what`'
-infowhat.SMS                =
+infowhat.SCYF               =
 '`source`, `short_src`, and `what`'
 infowhat.l                  =
 '`currentline`'
