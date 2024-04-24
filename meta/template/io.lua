@@ -1,4 +1,4 @@
----#if MS then DISABLE() end
+---#if CYF then DISABLE() end
 ---@meta io
 
 ---#DES 'io'

@@ -69,7 +69,7 @@ function os.difftime(t2, t1) end
 ---@nodiscard
 function os.time(date) end
 
----#if not MS then
+---#if not CYF then
 
 ---#DES 'os.execute'
 ---#if VERSION <= 5.1 and not JIT then

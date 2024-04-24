@@ -159,7 +159,7 @@ function string.unpack(fmt, s, pos) end
 ---@nodiscard
 function string.upper(s) end
 
----#if MS then
+---#if CYF then
 ---#DES 'string.unicode'
 ---@param s string
 ---@param i? integer

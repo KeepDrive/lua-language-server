@@ -15,8 +15,8 @@ function assert(v, message, ...) end
 
 ---@alias gcoptions
 ---|>"collect"      # ---#DESTAIL 'cgopt.collect'
----#if MS then
----| "restart"      # ---#DESTAIL 'cgopt.restartMS'
+---#if CYF then
+---| "restart"      # ---#DESTAIL 'cgopt.restartCYF'
 ---#else
 ---| "stop"         # ---#DESTAIL 'cgopt.stop'
 ---| "restart"      # ---#DESTAIL 'cgopt.restart'
@@ -39,8 +39,8 @@ function assert(v, message, ...) end
 ---@return any
 function collectgarbage(opt, ...) end
 ---#else
----#if MS then
----#DES 'collectgarbageMS'
+---#if CYF then
+---#DES 'collectgarbageCYF'
 ---#else
 ---#DES 'collectgarbage'
 ---#end
@@ -64,7 +64,7 @@ function error(message, level) end
 ---@class _G
 _G = {}
 
----#if MS then
+---#if CYF then
 ---#DES '_MOONSHARP'
 ---MOONSHARP
 _MOONSHARP = {}
@@ -163,7 +163,7 @@ function loadfile(filename) end
 function loadfile(filename, mode, env) end
 ---#end
 
----#if MS then
+---#if CYF then
 ---#DES 'loadsafe'
 ---@param chunk      string|function
 ---@param chunkname? string
@@ -235,8 +235,8 @@ function pairs(t) end
 ---@return any ...
 function pcall(f, arg1, ...) end
 
----#if MS then
----#DES 'printMS'
+---#if CYF then
+---#DES 'printCYF'
 ---@deprecated
 ---@param ... any
 function print(...) end
@@ -320,10 +320,10 @@ function setfenv(f, table) end
 ---#if VERSION > 5.1 or VERSION == JIT then
 ---@field __pairs (fun(t):(fun(t,k,v):any,any))|nil
 ---#end
----#if VERSION == JIT or MS or VERSION == 5.2 then
+---#if VERSION == JIT or CYF or VERSION == 5.2 then
 ---@field __ipairs (fun(t):(fun(t,k,v):(integer|nil),any))|nil
 ---#end
----#if MS then
+---#if CYF then
 ---@field __iterator (fun(f,s,var):((fun(s,var):...),any,any))|nil
 ---#end
 ---#if VERSION >= 5.4 then
@@ -405,7 +405,7 @@ function xpcall(f, err) end
 function xpcall(f, msgh, arg1, ...) end
 ---#end
 
----@version 5.1, MS
+---@version 5.1, CYF
 ---#DES 'unpack'
 ---@generic T
 ---@generic T1, T2, T3, T4, T5, T6, T7, T8, T9
@@ -417,7 +417,7 @@ function xpcall(f, msgh, arg1, ...) end
 ---@nodiscard
 function unpack(list, i, j) end
 
----#if MS then
+---#if CYF then
 ---#DES 'pack'
 ---@return any[]
 ---@nodiscard

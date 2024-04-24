@@ -5,7 +5,7 @@
 debug = {}
 
 ---@class debuginfo
----#if not MS then
+---#if not CYF then
 ---@field namewhat        string
 ---@field linedefined     integer
 ---@field lastlinedefined integer
@@ -28,8 +28,8 @@ debug = {}
 ---@field ntransfer       integer
 ---#end
 
----#if MS then
----#DES 'debug.debugMS'
+---#if CYF then
+---#DES 'debug.debugCYF'
 ---@deprecated
 ---#else
 ---#DES 'debug.debug'
@@ -53,15 +53,15 @@ function debug.gethook(co) end
 
 ---@alias infowhat string
 ---|+"n"     # ---#DESTAIL 'infowhat.n'
----#if MS then
----|+"S"     # ---#DESTAIL 'infowhat.SMS'
+---#if CYF then
+---|+"S"     # ---#DESTAIL 'infowhat.SCYF'
 ---#else
 ---|+"S"     # ---#DESTAIL 'infowhat.S'
 ---|+"t"     # ---#DESTAIL 'infowhat.t'
 ---|+"L"     # ---#DESTAIL 'infowhat.L'
 ---#end
 ---|+"l"     # ---#DESTAIL 'infowhat.l'
----#if VERSION <= 5.1 or MS and not JIT then
+---#if VERSION <= 5.1 or CYF and not JIT then
 ---|+"u" # ---#DESTAIL 'infowhat.u<5.1'
 ---#else
 ---|+"u" # ---#DESTAIL 'infowhat.u>5.2'
@@ -90,7 +90,7 @@ function debug.getinfo(thread, f, what) end
 ---@return any    value
 ---@nodiscard
 function debug.getlocal(thread, level, index) end
----#elseif not MS then
+---#elseif not CYF then
 ---#DES 'debug.getlocal>5.2'
 ---@overload fun(f: integer|async fun(...):..., index: integer):string, any
 ---@param thread  thread
@@ -151,7 +151,7 @@ function debug.setcstacklimit(limit) end
 ---@return T object
 function debug.setfenv(object, env) end
 
----#if not MS then
+---#if not CYF then
 
 ---@alias hookmask string
 ---|+"c" # ---#DESTAIL 'hookmask.c'

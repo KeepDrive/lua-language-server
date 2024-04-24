@@ -17,7 +17,7 @@ function require(modname) end
 ---@class packagelib
 ---#DES 'package.path'
 ---@field path      string
----#if not MS then
+---#if not CYF then
 ---#DES 'package.preload'
 ---@field preload   table
 ---#DES 'package.cpath'
@@ -35,7 +35,7 @@ package.config = [[
 !
 -]]
 
----#if not MS then
+---#if not CYF then
 
 ---@version <5.1
 ---#DES 'package.loaders'
