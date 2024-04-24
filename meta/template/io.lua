@@ -1,3 +1,4 @@
+---#if MS then DISABLE() end
 ---@meta io
 
 ---#DES 'io'

@@ -29,9 +29,10 @@ debug = {}
 ---#end
 
 ---#if MS then
----#DES 'debug.debug'
----#else
 ---#DES 'debug.debugMS'
+---@deprecated
+---#else
+---#DES 'debug.debug'
 ---#end
 function debug.debug() end
 
@@ -89,7 +90,7 @@ function debug.getinfo(thread, f, what) end
 ---@return any    value
 ---@nodiscard
 function debug.getlocal(thread, level, index) end
----#else
+---#elseif not MS then
 ---#DES 'debug.getlocal>5.2'
 ---@overload fun(f: integer|async fun(...):..., index: integer):string, any
 ---@param thread  thread
@@ -150,6 +151,8 @@ function debug.setcstacklimit(limit) end
 ---@return T object
 function debug.setfenv(object, env) end
 
+---#if not MS then
+
 ---@alias hookmask string
 ---|+"c" # ---#DESTAIL 'hookmask.c'
 ---|+"r" # ---#DESTAIL 'hookmask.r'
@@ -173,6 +176,8 @@ function debug.sethook(thread, hook, mask, count) end
 ---@param value  any
 ---@return string name
 function debug.setlocal(thread, level, index, value) end
+
+---#end
 
 ---#DES 'debug.setmetatable'
 ---@generic T
