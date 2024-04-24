@@ -186,6 +186,8 @@ m.BuiltIn = {
     ['table.clear']   = 'default',
     ['utf8']          = 'default',
     ['string.buffer'] = 'default',
+    ['dynamic']       = 'default',
+    ['json']          = 'default',
 }
 
 m.InlayHintKind = {
