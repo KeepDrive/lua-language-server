@@ -15,14 +15,16 @@ function require(modname) end
 
 ---#DES 'package'
 ---@class packagelib
+---#DES 'package.path'
+---@field path      string
+---#if not MS then
+---#DES 'package.preload'
+---@field preload   table
 ---#DES 'package.cpath'
 ---@field cpath     string
 ---#DES 'package.loaded'
 ---@field loaded    table
----#DES 'package.path'
----@field path      string
----#DES 'package.preload'
----@field preload   table
+---#end
 package = {}
 
 ---#DES 'package.config'
@@ -32,6 +34,8 @@ package.config = [[
 ?
 !
 -]]
+
+---#if not MS then
 
 ---@version <5.1
 ---#DES 'package.loaders'
@@ -63,4 +67,5 @@ function package.searchpath(name, path, sep, rep) end
 ---@param module table
 function package.seeall(module) end
 
+---#end
 return package

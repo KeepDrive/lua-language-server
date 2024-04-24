@@ -235,9 +235,16 @@ function pairs(t) end
 ---@return any ...
 function pcall(f, arg1, ...) end
 
+---#if MS then
+---#DES 'printMS'
+---@deprecated
+---@param ... any
+function print(...) end
+---#else
 ---#DES 'print'
 ---@param ... any
 function print(...) end
+---#end
 
 ---#DES 'rawequal'
 ---@param v1 any
@@ -313,8 +320,11 @@ function setfenv(f, table) end
 ---#if VERSION > 5.1 or VERSION == JIT then
 ---@field __pairs (fun(t):(fun(t,k,v):any,any))|nil
 ---#end
----#if VERSION == JIT or VERSION == 5.2 then
+---#if VERSION == JIT or MS or VERSION == 5.2 then
 ---@field __ipairs (fun(t):(fun(t,k,v):(integer|nil),any))|nil
+---#end
+---#if MS then
+---@field __iterator (fun(f,s,var):((fun(s,var):...),any,any))|nil
 ---#end
 ---#if VERSION >= 5.4 then
 ---@field __close (fun(t,errobj):any)|nil

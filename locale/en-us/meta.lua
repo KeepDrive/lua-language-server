@@ -150,6 +150,9 @@ Receives any number of arguments and prints their values to `stdout`, converting
 The function print is not intended for formatted output, but only as a quick way to show a value, for instance for debugging. For complete control over the output, use $string.format and $io.write.
 ]]
 
+printMS             =
+'Prints arguments to `stdout`, but `stdout` is unavailable in CYF, if you want to write text to the debugger use `DEBUG(...)` instead.'
+
 rawequal            =
 'Checks whether v1 is equal to v2, without invoking the `__eq` metamethod.'
 
