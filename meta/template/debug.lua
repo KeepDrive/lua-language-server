@@ -29,7 +29,7 @@ debug = {}
 ---#end
 
 ---#if CYF then
----#DES 'debug.debugCYF'
+---#DESDOC('debug.debugCYF', 'ms-moonluadifferences')
 ---@deprecated
 ---#else
 ---#DES 'debug.debug'

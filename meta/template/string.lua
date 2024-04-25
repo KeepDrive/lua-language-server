@@ -160,6 +160,7 @@ function string.unpack(fmt, s, pos) end
 function string.upper(s) end
 
 ---#if CYF then
+---#SETDOC 'ms-additions'
 ---#DES 'string.unicode'
 ---@param s string
 ---@param i? integer

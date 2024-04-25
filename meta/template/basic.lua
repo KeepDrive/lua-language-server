@@ -40,7 +40,7 @@ function assert(v, message, ...) end
 function collectgarbage(opt, ...) end
 ---#else
 ---#if CYF then
----#DES 'collectgarbageCYF'
+---#DESDOC('collectgarbageCYF', 'ms-moonluadifferences')
 ---#else
 ---#DES 'collectgarbage'
 ---#end
@@ -65,6 +65,7 @@ function error(message, level) end
 _G = {}
 
 ---#if CYF then
+---#SETDOC 'ms-additions'
 ---#DES '_MOONSHARP'
 ---MOONSHARP
 _MOONSHARP = {}
@@ -97,6 +98,7 @@ _MOONSHARP.is_pcl = false
 ---MOONSHARP
 --@type string
 _MOONSHARP.banner = nil
+---#SETDOC 'lua'
 ---#end
 
 ---@version 5.1
@@ -164,6 +166,7 @@ function loadfile(filename, mode, env) end
 ---#end
 
 ---#if CYF then
+---#SETDOC 'ms-additions'
 ---#DES 'loadsafe'
 ---@param chunk      string|function
 ---@param chunkname? string
@@ -174,7 +177,6 @@ function loadfile(filename, mode, env) end
 ---@nodiscard
 function loadsafe(chunk, chunkname, mode, env) end
 ---#DES 'loadfilesafe'
----MOONSHARP
 ---@param filename? string
 ---@param mode?     loadmode
 ---@param env?      table
@@ -182,6 +184,7 @@ function loadsafe(chunk, chunkname, mode, env) end
 ---@return string?  error_message
 ---@nodiscard
 function loadfilesafe(filename, mode, env) end
+---#SETDOC 'lua'
 ---#end
 
 
@@ -236,7 +239,7 @@ function pairs(t) end
 function pcall(f, arg1, ...) end
 
 ---#if CYF then
----#DES 'printCYF'
+---#DESDOC('printCYF', 'cyf-api-functions-main')
 ---@deprecated
 ---@param ... any
 function print(...) end
@@ -418,7 +421,7 @@ function xpcall(f, msgh, arg1, ...) end
 function unpack(list, i, j) end
 
 ---#if CYF then
----#DES 'pack'
+---#DESDOC('pack', 'ms-additions')
 ---@return any[]
 ---@nodiscard
 function pack(...) end
