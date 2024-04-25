@@ -20,7 +20,17 @@ local m = {}
 
 m.metaPaths = {}
 
-local function getDocFormater(uri)
+local function refToDocPage(ref)
+    local _, _, doc, page = ref:find('(%a+)%-([%a-]+)')
+    return doc, page
+end
+
+local function getDocFormater(uri, doc)
+    if doc == 'cyf' then
+        return 'HOVER_DOCUMENT_CYF'
+    elseif doc == 'ms' then
+        return 'HOVER_DOCUMENT_MS'
+    end
     local version = config.get(uri, 'Lua.runtime.version')
     if client.getOption('viewDocument') then
         if version == 'Lua 5.1' then
@@ -67,27 +77,38 @@ local function convertLink(uri, text)
             return ('`%s`'):format(name) .. lastDot
         end
     end):gsub('§([%.%w]+)', function (name)
-        local lastDot = ''
+        local lastdot = ''
         if name:sub(-1) == '.' then
             name = name:sub(1, -2)
-            lastDot = '.'
+            lastdot = '.'
         end
         if fmt then
-            return ('[§%s](%s)'):format(name, lang.script(fmt, name)) .. lastDot
+            return ('[§%s](%s)'):format(name, lang.script(fmt, name)) .. lastdot
         else
-            return ('`%s`'):format(name) .. lastDot
+            return ('`%s`'):format(name) .. lastdot
         end
+    end):gsub('@%(([%a%-]+)%)([%.%w_%:]+)', function (ref, name)
+        local doc, page = refToDocPage(ref)
+        local lastdot = ''
+        if name:sub(-1) == '.' then
+            name = name:sub(1, -2)
+            lastdot = '.'
+        end
+        return ('[%s](%s)'):format(name, lang.script(getDocFormater(nil, doc), page)) .. lastdot
     end)
 end
 
-local function createViewDocument(name)
-    local fmt = getDocFormater()
+local function createViewDocument(name, doc, page)
+    local fmt = getDocFormater(nil, doc)
     if not fmt then
         return nil
     end
     name = name:match '[%w_%.%:]+'
     if name:sub(-1) == '.' then
         name = name:sub(1, -2)
+    end
+    if doc then
+        return ('[%s](%s)'):format(lang.script.HOVER_VIEW_DOCUMENTS, lang.script(fmt, page))
     end
     return ('[%s](%s)'):format(lang.script.HOVER_VIEW_DOCUMENTS, lang.script(fmt, 'pdf-' .. name))
 end
@@ -109,7 +130,7 @@ local function compileSingleMetaDoc(uri, script, metaLang, status)
     end
     middleBuf[#middleBuf+1] = ('PUSH [===[%s]===]'):format(script:sub(last))
     local middleScript = table.concat(middleBuf, '\n')
-    local version, jit, cyf
+    local version, jit, cyf, doc, page
     if config.get(uri, 'Lua.runtime.version') == 'LuaJIT' then
         version = 5.1
         jit = true
@@ -132,6 +153,9 @@ local function compileSingleMetaDoc(uri, script, metaLang, status)
         PUSH    = function (text)
             compileBuf[#compileBuf+1] = text
         end,
+        SETDOC  = function (ref)
+            doc, page = refToDocPage(ref)
+        end,
         DES     = function (name)
             local des = metaLang[name]
             if not des then
@@ -143,7 +167,7 @@ local function compileSingleMetaDoc(uri, script, metaLang, status)
                 compileBuf[#compileBuf+1] = convertLink(uri, line)
                 compileBuf[#compileBuf+1] = '\n'
             end
-            local viewDocument = createViewDocument(name)
+            local viewDocument = createViewDocument(name, doc, page)
             if viewDocument then
                 compileBuf[#compileBuf+1] = '---\n---'
                 compileBuf[#compileBuf+1] = viewDocument
