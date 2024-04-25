@@ -1,5 +1,6 @@
 ---#if not CYF then DISABLE() end
 ---@meta dynamic
+---#SETDOC 'ms-additions'
 
 ---#DES 'dynamic'
 ---@class dynamiclib

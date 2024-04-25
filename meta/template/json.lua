@@ -1,5 +1,6 @@
 ---#if not CYF then DISABLE() end
 ---@meta json
+---#SETDOC 'ms-additions'
 
 ---#DES 'json'
 ---@class jsonlib
