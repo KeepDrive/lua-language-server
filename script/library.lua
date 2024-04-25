@@ -154,6 +154,9 @@ local function compileSingleMetaDoc(uri, script, metaLang, status)
             compileBuf[#compileBuf+1] = text
         end,
         SETDOC  = function (ref)
+            if ref == 'lua' then
+                doc, page = nil, nil
+            end
             doc, page = refToDocPage(ref)
         end,
         DES     = function (name)
@@ -175,6 +178,26 @@ local function compileSingleMetaDoc(uri, script, metaLang, status)
             end
             compileBuf[#compileBuf+1] = '---\n'
         end,
+        DESDOC  = function (name, ref)
+            local des = metaLang[name]
+            if not des then
+                des = ('Miss locale <%s>'):format(name)
+            end
+            compileBuf[#compileBuf+1] = '---\n'
+            for line in util.eachLine(des) do
+                compileBuf[#compileBuf+1] = '---'
+                compileBuf[#compileBuf+1] = convertLink(uri, line)
+                compileBuf[#compileBuf+1] = '\n'
+            end
+            local viewDocument = createViewDocument(name, refToDocPage(ref))
+            if viewDocument then
+                compileBuf[#compileBuf+1] = '---\n---'
+                compileBuf[#compileBuf+1] = viewDocument
+                compileBuf[#compileBuf+1] = '\n'
+            end
+            compileBuf[#compileBuf+1] = '---\n'
+        end,
+
         DESTAIL = function (name)
             local des = metaLang[name]
             if not des then
