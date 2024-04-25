@@ -367,6 +367,10 @@ HOVER_DOCUMENT_LUAJIT   =
 'http://www.lua.org/manual/5.1/manual.html#{}'
 HOVER_DOCUMENT_LUACYF   =
 'http://www.lua.org/manual/5.2/manual.html#{}'
+HOVER_DOCUMENT_CYF      =
+'https://rhenaudthelukark.github.io/CreateYourFrisk/pages/{}.html'
+HOVER_DOCUMENT_MS       =
+'https://www.moonsharp.org/{}.html'
 HOVER_NATIVE_DOCUMENT_LUA51     =
 'command:extension.lua.doc?["en-us/51/manual.html/{}"]'
 HOVER_NATIVE_DOCUMENT_LUA52     =
