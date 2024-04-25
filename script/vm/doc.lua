@@ -116,7 +116,7 @@ function vm.getValidVersions(doc)
             valids[('Lua %.1f'):format(version.version)] = true
         elseif 'JIT' == version.version then
             valids['LuaJIT'] = true
-        elseif 'MS' == version.version then
+        elseif 'CYF' == version.version then
             valids['LuaCYF'] = true
         end
     end
