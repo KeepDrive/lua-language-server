@@ -151,7 +151,7 @@ The function print is not intended for formatted output, but only as a quick way
 ]]
 
 printCYF            =
-'Prints arguments to `stdout`, but `stdout` is unavailable in CYF, if you want to write text to the debugger use `DEBUG(...)` instead.'
+'Prints arguments to `stdout`, but `stdout` is unavailable in CYF, if you want to write text to the debugger use @(cyf-api-functions-main)DEBUG instead.'
 
 rawequal            =
 'Checks whether v1 is equal to v2, without invoking the `__eq` metamethod.'
@@ -736,7 +736,7 @@ string.unpack               =
 string.upper                =
 'Returns a copy of this string with all lowercase letters changed to uppercase.'
 string.unicode              =
-'Similar to `string.byte()`, except it returns unicode codepoints of a given string/substring.'
+'Similar to $string.byte, except it returns unicode codepoints of a given string/substring.'
 string.contains             =
 'Returns true if `str1` contains `str2`.'
 string.startsWith           =
@@ -799,9 +799,9 @@ Please note this function is meant for very specific situations. In most cases i
 dynamic                     =
 'MoonSharp module for dynamic expression evaluation'
 dynamic.eval                =
-'Evaluates a string expression or a prepared expression object via `dynamic.prepare`'
+'Evaluates a string expression or a prepared expression object via @(ms-additions)dynamic.prepare.'
 dynamic.prepare             =
-'Prepares an expression object from a string for use with `dynamic.eval` for faster execution'
+'Prepares an expression object from a string for use with @(ms-additions)dynamic.eval for faster execution'
 
 json                        =
 [[
@@ -813,7 +813,7 @@ json.parse                  =
 json.serialize              =
 'Converts a table into a JSON string.'
 json.isnull                 =
-'Checks if `val` is a null value. See `json.null()`.'
+'Checks if `val` is a null value. See @(ms-additions)json.null.'
 json.null                   =
 'Returns a special null value for null entries in converted tables.'
 
