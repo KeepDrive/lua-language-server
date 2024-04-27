@@ -1638,6 +1638,32 @@ local docSwitch = util.switch()
             finish = getFinish(),
         }
     end)
+    : case 'script'
+    : call(function ()
+        local script = {
+            type   = 'doc.script',
+            start  = getFinish(),
+            finish = getFinish(),
+            hasDir = {}
+        }
+        local nameToken = parseName()
+        if not nameToken then
+            return nil
+        end
+        if nameToken[1]:find("E") then
+            script.accepts.Encounters = true
+        end
+        if nameToken[1]:find("M") then
+            script.accepts.Monsters = true
+        end
+        if nameToken[1]:find("W") then
+            script.accepts.Waves = true
+        end
+        if script.accepts.Encounters and script.accepts.Monsters and script.accepts.Waves then
+            return nil
+        end
+        return script
+    end)
 
 local function convertTokens(doc)
     local tp, text = nextToken()
@@ -1936,7 +1962,8 @@ local function bindDoc(source, binded)
                 bindDocWithSource(doc, source.value)
                 goto CONTINUE
             end
-        elseif doc.type == 'doc.comment' then
+        elseif doc.type == 'doc.script'
+        or     doc.type == 'doc.comment' then
             bindDocWithSource(doc, source)
             ok = true
         end
@@ -2088,7 +2115,7 @@ local function bindDocWithSources(sources, binded)
     bindGeneric(binded)
     bindCommentsAndFields(binded)
     bindReturnIndex(binded)
-    
+
     -- doc is special node
     if lastDoc.special then
         if bindDoc(lastDoc.special, binded) then

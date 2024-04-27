@@ -22,6 +22,8 @@ local globalSubs = util.multiTable(2)
 ---@class vm.global
 ---@field links table<uri, vm.global.link>
 ---@field setsCache? table<uri, parser.object[]>
+---@field subcache? table<uri, parser.object[]>
+---@field uriToCache? table<uri, parser.object[]>
 ---@field cate vm.global.cate
 local mt = {}
 mt.__index = mt
@@ -34,6 +36,8 @@ function mt:addSet(uri, source)
     local link = self.links[uri]
     link.sets[#link.sets+1] = source
     self.setsCache = nil
+    self.subcache = nil
+    self.uriToCache = nil
 end
 
 ---@param uri    uri
@@ -49,19 +53,62 @@ function mt:getSets(suri)
     if not self.setsCache then
         self.setsCache = {}
     end
+    if not self.uriToCache then
+        self.uriToCache = {}
+    end
+    if not self.subcache then
+        self.subcache = {}
+    end
+    local subcache = self.uriToCache[suri]
+    if subcache then
+        return subcache
+    end
     local scp = scope.getScope(suri)
     local cacheUri = scp.uri or '<callback>'
-    if self.setsCache[cacheUri] then
-        return self.setsCache[cacheUri]
+    local cache = self.setsCache[cacheUri]
+    local processCache = not cache
+    if processCache then
+        self.setsCache[cacheUri] = {}
+        cache = self.setsCache[cacheUri]
+    end
+    local scriptDir = select(3, suri:find('/Lua/(Encounters)/')) or select(3, suri:find('/Lua/(Monsters)/')) or select(3, suri:find('/Lua/(Waves)/'))
+    if scriptDir then
+        subcache = self.subcache[scriptDir]
+        if subcache then
+            self.uriToCache[suri] = subcache
+            return subcache
+        end
+        subcache = {}
+        setmetatable(subcache, {
+            __len = function(s) return rawlen(s) + #cache end,
+            __index = function(s, key) return cache[key - rawlen(s)] end
+        })
+        self.subcache[scriptDir] = subcache
+        self.uriToCache[suri] = subcache
+    else
+        self.uriToCache[suri] = cache
+        if not processCache then
+            return cache
+        end
     end
     local clock = os.clock()
-    self.setsCache[cacheUri] = {}
-    local cache = self.setsCache[cacheUri]
     for uri, link in pairs(self.links) do
         if link.sets then
             if scp:isVisible(uri) then
                 for _, source in ipairs(link.sets) do
-                    cache[#cache+1] = source
+                    local addToCache = processCache
+                    if subcache then
+                        local scriptSpecific = vm.getScriptSpecific(source)
+                        if scriptSpecific then
+                            addToCache = false
+                            if scriptSpecific.accepts[scriptDir] then
+                                subcache[#subcache+1] = source
+                            end
+                        end
+                    end
+                    if addToCache then
+                        cache[#cache+1] = source
+                    end
                 end
             end
         end
@@ -70,7 +117,7 @@ function mt:getSets(suri)
     if cost > 0.1 then
         log.warn('global-manager getSets costs', cost, self.name)
     end
-    return cache
+    return subcache and subcache or cache
 end
 
 ---@return parser.object[]
@@ -98,6 +145,8 @@ end
 function mt:dropUri(uri)
     self.links[uri] = nil
     self.setsCache = nil
+    self.uriToCache = nil
+    self.subcache = nil
 end
 
 ---@return string
