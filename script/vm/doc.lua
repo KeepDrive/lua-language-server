@@ -8,6 +8,7 @@ local config    = require 'config'
 ---@field package _castTargetHead? parser.object | vm.global | false
 ---@field package _validVersions? table<string, boolean>
 ---@field package _deprecated? parser.object | false
+---@field package _scriptSpecific? parser.object | false
 ---@field package _async? boolean
 ---@field package _nodiscard? boolean
 
@@ -188,6 +189,61 @@ function vm.getDeprecated(value, deep)
         return deprecated
     else
         return getDeprecated(value)
+    end
+end
+
+---@param value parser.object
+---@return parser.object?
+local function getScriptSpecific(value)
+    if not value.bindDocs then
+        return nil
+    end
+    if value._scriptSpecific ~= nil then
+        return value._scriptSpecific or nil
+    end
+    for _, doc in ipairs(value.bindDocs) do
+        if doc.type == 'doc.script' then
+            value._scriptSpecific = doc
+            return doc
+        end
+    end
+    if value.type == 'function' then
+        local doc = getScriptSpecific(value.parent)
+        if doc then
+            value._scriptSpecific = doc
+            return doc
+        end
+    end
+    value._scriptSpecific = false
+    return nil
+end
+
+---@param value parser.object
+---@param deep boolean?
+---@return parser.object?
+function vm.getScriptSpecific(value, deep)
+    if deep then
+        local defs = vm.getDefs(value)
+        if #defs == 0 then
+            return nil
+        end
+        local scriptSpecific
+        for _, def in ipairs(defs) do
+            if def.type == 'setglobal'
+            or def.type == 'setfield'
+            or def.type == 'setmethod'
+            or def.type == 'setindex'
+            or def.type == 'tablefield'
+            or def.type == 'tableindex' then
+                scriptSpecific = getScriptSpecific(def)
+                if not scriptSpecific then
+                    return nil
+                end
+            end
+        end
+        return scriptSpecific
+    else
+        return getScriptSpecific(value)
     end
 end
 
