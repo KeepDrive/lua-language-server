@@ -193,8 +193,7 @@ local template = {
                                                 'LuaCYF',
                                             },
     ['Lua.runtime.path']                    = Type.Array(Type.String) >> {
-                                                "?.lua",
-                                                "?/init.lua",
+                                                "Libraries/?.lua",
                                             },
     ['Lua.runtime.pathStrict']              = Type.Boolean >> false,
     ['Lua.runtime.special']                 = Type.Hash(
