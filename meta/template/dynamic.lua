@@ -6,16 +6,14 @@
 ---@class dynamiclib
 dynamic = {}
 
----@alias expression_object userdata
-
 ---#DES 'dynamic.eval'
----@param expr string | expression_object
+---@param expr string | userdata
 ---@return any
 function dynamic.eval(expr) end
 
 ---#DES 'dynamic.prepare'
 ---@param expr string
----@return expression_object
+---@return userdata
 function dynamic.prepare(expr) end
 
 return dynamic
