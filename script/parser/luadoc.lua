@@ -1644,7 +1644,7 @@ local docSwitch = util.switch()
             type   = 'doc.script',
             start  = getFinish(),
             finish = getFinish(),
-            hasDir = {}
+            accepts = {}
         }
         local nameToken = parseName()
         if not nameToken then
