@@ -839,3 +839,154 @@ utf8.len                    =
 'Returns the number of UTF-8 characters in string `s` that start between positions `i` and `j` (both inclusive).'
 utf8.offset                 =
 'Returns the position (in bytes) where the encoding of the `n`-th character of `s` (counting from position `i`) starts.'
+isCYF                       =
+"A value - `true` by default - that indicates that if you're on CYF. `nil` if not on CYF. Test it with `if not isCYF then` or `if isCYF then`."
+isRetro                     =
+"A value which is `true` whenever CYF's retrocompatibility mode is active and `false` when it isn't. Test it with `if not isRetro then` or `if isRetro then`."
+safe                        =
+"`true` if CYF's safe mode is enabled, `false` otherwise."
+windows                     =
+"Returns `true` if the user is on Windows, `false` otherwise."
+CYFversion                  =
+[[
+Returns a different string based on the version of CYF you are using.
+- Versions before v0.6: Previous version's number.
+For example, in CYF v0.5.5, this will be `"0.5.4"`.
+- Versions between v0.6 and v0.6.1.2: always `"1.0"`.
+- Versions after v0.6.1.2: Current version's number.
+For example, in CYF `v0.6.2`, this will be `"0.6.2"`.
+#### TIP: Lua has a very useful built-in string comparing function.
+You can very easily check for `if CYFversion < "0.6.2.2" then`, `if CYFversion >= "0.6.1.2" then` and other combinations.
+]]
+LTSversion                  =
+[[
+Returns a different number based on the LTS version of CYF you are using.
+
+You can compare this number to your own values to make sure the right version of CYF is used to play your mod, if needed.
+
+You may also want to check if this value exists at all in case older versions of CYF are used to play your mod.
+]]
+music                       =
+"Name of your encounter's starting music, without the file extension. If this variable isn't present, it'll play Undertale's default battle theme. If you don't want any music, call `Audio.Stop()` in the `EncounterStarting()` function."
+encountertext               =
+[[
+Set the initial text of your encounter here. After that, you can modify it at any time in preparation for the next turn. `encountertext` gets read out at the start of every new turn (i.e. you going back to the FIGHT/ACT/ITEM/MERCY selection).
+
+* You can use `\n` to create a new line with a star (*), and `\r` to create a new line without a star.
+
+As of CYF v0.6.4, if you end up with 4 or more lines of encounter text displayed at once, the text will move up (9 pixels, one time) to compensate and try to fit your text inside the box.
+]]
+nextwaves                   =
+"A list of all simultaneous attack waves you want when the monsters start their attacks. You can modify this at any time, and it'll get read out before the enemies start their attack. For most boss-type encounters, you'll likely only want one wave simultaneously - but you can get creative here."
+wavetimer                   =
+"How long it takes for the defending step to end. If this isn't set anywhere, it'll be the default `4.0` seconds."
+arenasize                   =
+[[The inner size of the box the player's constrained to. `{155, 130}` is the default size for a lot of basic Undertale encounters. Papyrus' battle, for instance, has this at `{245, 130}` most of the time. You may modify this at any time - it'll only get read out before the enemies start their attack.
+Note: lowest possible setting is `{16, 16}` - this is the size of the player's soul. Anything lower will be set to `16` anyway.]]
+enemies                     =
+"Defines the names of your enemy scripts that will be used in your encounter. After initialization, the names will be replaced by `Script` controller objects you can use to control your monster scripts."
+enemypositions              =
+[[
+Defines where the enemies are on the screen. `{0, 0}` means they're centered just above the arena, with 1 pixel of space inbetween. `{-30, 0}` means above the arena to the left; `{50, 80}` means `50` pixels to the right and `80` pixels above that center.
+You will always need at least as many enemy positions as enemies in your encounter.
+]]
+autolinebreak               =
+"`false` by default. If this value is set to `true`, the auto linebreak system will automatically add line breaks (`\\r`) to the text. No need to use `\\r` or `\\n` anymore!"
+playerskipdocommand         =
+"`false` by default. If this value is set to `true`, text commands will be called even if the player skips the text - except for `[w]` and `[letters]` commands, and commands with the tag \"`skipover`\"."
+unescape                    =
+"`false` by default. If this value is set to `true`, you can't exit the battle with the `ESC` key anymore."
+flee                        =
+"`true` by default. If this value is set to `false`, the Flee option will not appear in the Mercy menu."
+fleesuccess                 =
+"`nil` by default. Set this to `true` or `false` to force the Flee option to succeed or fail, respectively. Otherwise, Undertale's formula is used, which starts at a 50% chance to flee on the first turn, and increases by 10% every turn after that (regardless of if those turns were spent trying to flee as well)."
+fleetexts                   =
+"If you set this to a table filled with strings, a random one of your strings will be displayed whenever the player flees the battle (if that's enabled)."
+revive                      =
+[[
+If this variable is set to `true`, the player will be revived when they hit 0 HP.
+By default, there will be no special text for the player being revived; however, if you set `deathtext`, that will be used.
+]]
+deathtext                   =
+[[
+Text displayed when the player dies, in the Game Over screen. By default, it'll use the normal death text.
+This text is also used if the player gets revived while revive is true. Otherwise, there is no revive text.
+]]
+deathmusic                  =
+"Sets the death music. The music is played if revive is not set."
+Wave                        =
+"A table returning the current wave scripts used. Returns a table with a length of `0` if not in the state `DEFENDING`."
+noscalerotationbug          =
+"If this variable is set to `true`, the rotation of any child sprite with a rotated parent will no longer be reset after either changing its sprite in any way or scaling it."
+comments                    =
+"A list of random comments attached to this monster. You can retrieve one at random using the `RandomEncounterText()` function in your Encounter script."
+commands                    =
+"A list of ACT commands you can do. Listed in the ACT menu and used in `HandleCustomCommand()`. Note that the behaviour for Check is built-in, and shows you the monster's name followed by the ATK and DEF, and then the check variable you'll see all the way down."
+randomdialogue              =
+[[
+A list of random dialogue the monster can have. One of these is selected at random if `currentdialogue` is `nil` (i.e. has no value).
+NOTE: The dialogue bubble will not be shown so long as it has no displayable letters. Set `randomdialogue` to a line with only text commands, such as "`[noskip]``[next]`", to use this to your advantage.
+]]
+currentdialogue             =
+[[
+The next dialogue for this monster. This overrides the random dialogue and is meant for special actions (e.g. you hit Vegetoid's green carrots after selecting Dinner from the ACT menu). This variable gets cleared every time after it's read out in the monster dialogue phase. This is done so you don't have to take care of managing it manually.
+NOTE: The dialogue bubble will not be shown so long as it has no displayable letters. Set `currentdialogue` to a line with only text commands, such as "`[noskip]``[next]`", to use this to your advantage.
+]]
+defensemisstext             =
+"The text which will be displayed if the Player's attack is successful but deals 0 damage. `\"MISS\"` by default."
+noattackmisstext            =
+"The text which will be displayed if the Player doesn't press Z when attacking. `\"MISS\"` by default."
+cancheck                    =
+"`true` by default. If set to `false`, it will disable the default Check action that shows up in your ACT menu. If you want a custom Check action, you can add it back into your commands table, and handle it like any other custom command."
+canspare                    =
+"`false` by default. If you change this to `true`, your monster's name will turn yellow and it will be spareable."
+isactive                    =
+[[
+Tells you whether this enemy is active.
+Will be `false` if they have been manually de-activated, killed or spared.
+Setting this will do nothing! You must call `SetActive`
+]]
+sprite                      =
+"Name of the sprite in your Sprites folder, without the .PNG extension. This is the initial sprite for your monster. It can be changed using `SetSprite(name)`."
+monstersprite               =
+"Sprite handler of the monster."
+dialogbubble                =
+"What dialogue bubble will be used for the monster's dialogue. You can change this at any time, but this must be initially set to something. For a list of all possible options, check the [dialog bubble names chart](https://rhenaudthelukark.github.io/CreateYourFrisk/media/dialogoptions.png). Positioning of the bubbles is done automatically."
+dialogueprefix              =
+"A string, appended to the beginning of every monster's dialogue. The default is \"`[effect:rotate]`\""
+name                        =
+"Monster name. Fairly self-explanatory; shows up in the FIGHT/ACT menus. Can also be changed at any time."
+hp                          =
+"Your monster's max HP, initially. After the fight has started, this value will always accurately reflect your monster's current HP. You can then modify this value to change your monster's current HP."
+maxhp                       =
+"Your monster's max HP. After the fight has started this value will be always the same, unless you change it. It is mainly used for lifebars and such. You better not set it as `0` or as a negative number, though."
+atk                         =
+"Your monster's ATK. Only used in the default Check handler; bullet damage is set through wave scripts. If you're not using the default Check you can leave this out."
+def                         =
+"Your monster's DEF."
+xp                          =
+"Your monster's XP upon actually defeating them. You only get this by killing the monster."
+gold                        =
+"Gold you get from either killing or sparing this monster. Since the gold can change based on whether you kill or spare the monster, you can modify this at any time up until the fight ends."
+check                       =
+"When checking with the default Check option, this is what's listed under the monster's name, ATK and DEF."
+unkillable                  =
+"Set it to `true` and the monster will not be killed if it has less than 1 HP. However, it can still be killed with `Kill()`."
+canmove                     =
+[[
+Deprecated, always returns `true`.
+Old behavior: Returns `true` if you are able to move or unbind `monstersprite`, `false` otherwise.
+]]
+posx                        =
+"The x position of the enemy's sprite."
+posy                        =
+"The y position of the enemy's sprite."
+font                        =
+"The default font used by the monster. Set it to `nil` if you want to use the normal monster font."
+voice                       =
+"The default voice used by the monster. Set it to `nil` if you want to use the default voice."
+wavename =
+[[
+Returns the name of the wave file, without the extension, from the Waves folder.
+Other than the above, wave scripts don't have any variables that are read out from the start, but you can define your own. An instance of a wave script is made when you start defending, and is destroyed when the defending step ends. As such, you can't store variables in a wave script for reusing later. Use the Encounter script to keep track of things.
+]]
