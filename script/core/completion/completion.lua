@@ -1546,7 +1546,7 @@ local function tryWord(state, position, triggerCharacter, results)
                     local env = guide.getENV(state.ast, startPos)
                     if env then
                         checkGlobal(state, word, startPos, position, env, false, results)
-                        checkModule(state, word, startPos, results) 
+                        checkModule(state, word, startPos, results)
                     end
                 end
             end
