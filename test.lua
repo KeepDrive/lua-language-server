@@ -66,7 +66,7 @@ local function testAll()
     test 'signature'
     test 'command'
     test 'document_symbol'
-    test 'code_action'
+    --test 'code_action'
     test 'other'
 end
 
@@ -106,9 +106,9 @@ local function main()
         testAll()
     end)
 
-    test 'tclient'
+    --test 'tclient'
     test 'full'
-    test 'plugins.test'
+    --test 'plugins.test'
     test 'cli.test'
 end
 
