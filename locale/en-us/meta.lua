@@ -990,3 +990,137 @@ wavename =
 Returns the name of the wave file, without the extension, from the Waves folder.
 Other than the above, wave scripts don't have any variables that are read out from the start, but you can define your own. An instance of a wave script is made when you start defending, and is destroyed when the defending step ends. As such, you can't store variables in a wave script for reusing later. Use the Encounter script to keep track of things.
 ]]
+
+EnteringState =
+''
+EnteringState.ACTIONSELECT =
+[[
+Returning to the main part of the battle, where you can select FIGHT/ACT/ITEM/MERCY.
+]]
+EnteringState.ATTACKING =
+[[
+When you've selected a target with the FIGHT option.
+]]
+EnteringState.DEFENDING =
+[[
+When the enemy/enemies finish dialogue, and one or more waves start.
+]]
+EnteringState.ENEMYSELECT =
+[[
+When you've selected either FIGHT or ACT, and need to select an enemy.
+]]
+EnteringState.ACTMENU =
+[[
+When you've selected an ACT target, and must now select an ACT command.
+]]
+EnteringState.ITEMMENU =
+[[
+When you've selected ITEM.
+]]
+EnteringState.MERCYMENU =
+[[
+When you've selected MERCY.
+]]
+EnteringState.ENEMYDIALOGUE =
+[[
+When your enemy/enemies start their dialogue.
+]]
+EnteringState.DIALOGRESULT =
+[[
+When you call `BattleDialog()`, or when the UI shows text on its own (e.g. when using an item).
+]]
+EncounterStarting =
+[[
+Happens once when everything's done initializing but before any encounter actions start. You should do things like stopping the music here, or using State() if you want to start the fight off with some dialogue.
+]]
+EnemyDialogueStarting =
+[[
+Happens when you go to the monster dialogue state. You're still free to modify monster dialogue here.
+]]
+EnemyDialogueEnding =
+[[
+Happens when you go from the monster dialogue state to the defending state.
+]]
+DefenseEnding =
+[[
+Happens when you go from the defending state of the game to any other state. If you read up on the `RandomEncounterText()` function, you'll want to use it here.
+]]
+HandleFlee =
+[[
+Happens when you select the Flee option from the Mercy menu. If you implement `HandleFlee()`, the fleeing sequence will not run automatically, and you will have to do it manually with the `Flee()` function.
+- `success`: Whether the fleeing condition is `true`.
+]]
+HandleItem =
+[[
+Happens when you select an item from the item menu.
+- `item_ID`: The name of the item used, IN ALL CAPS. Similar to `HandleCustomCommand` in monster scripts.
+- `position`: The position of the item used in the player's inventory. The first item is number `1`.
+In CYF, you can use the Inventory object to edit the player's inventory. The items' names will be in caps, like with `HandleCustomCommand()`.
+]]
+EnteringState =
+[[
+When you enter a new state, this function will fire with `newstate` containing the new state's name, and `oldstate` containing the previous state's name. Both are in all caps. One of the most powerful things about it is that you can use `State()` here to interrupt state changes initiated by the engine itself.
+]]
+UpdateE =
+[[
+This function runs for every frame (usually at 60FPS, depends on the player's framerate) for all of the encounter, even during waves. This is an extremely powerful function, as it can run any code at any time, no matter what. The only exception is the game over state - if the player dies, no code from within this function will be run.
+]]
+BeforeDeath =
+[[
+This function runs the moment the Player takes mortal damage (by any means, including bullet damage, scripted damage, setting Player.hp to 0, and even text commands), just before activating the Game Over sequence. This is the perfect place to set Real and AlMighty Globals you want set when the player dies
+(see @(cyf-api-functions-main)Misc. Functions).
+
+If you use `Player.hp` or `Player.Heal` here to bring the Player's hp back to greater than `0`, they will live and the Game Over sequence will be cancelled.
+]]
+OnTextDisplay =
+[[
+Every time any text object's letters are created, this function gets called. This function is the best place to manipulate the text object's letters using `Text.GetLetters`.
+The argument `text` is the text object itself.
+This event isn't called for text objects which have their own `Text.OnTextDisplay()` function.
+]]
+HandleAttack =
+[[
+Happens the moment the player's attack has applied damage - this is when you hear the hitting sound after the slash animation.
+`damage` will be `-1` if the player pressed Fight, but didn't press any buttons and let it end by itself. The monster's `hp` variable will have updated at this time, too.
+Don't call `BattleDialog()` here, it's a bit buggy right now.
+]]
+OnDeath =
+[[
+Happens after your attack's shaking animation has completed and the monster's HP is `0`. If you implement `OnDeath()`, your monster will not die automatically, and you will have to do it manually with the `Kill()` function.
+`OnDeath()` will only happen through monster kills that happened with the FIGHT command; scripted `Kill()` calls will not trigger it.
+Calling `BattleDialog()` here will probably screw up the battle UI.
+]]
+OnSpare =
+[[
+Happens after you successfully spared a monster. If you implement `OnSpare()`, your monster will not be spared automatically, and you will have to do it manually with the `Spare()` function.
+`OnSpare()` will only happen through a monster spare that happened with the SPARE command; scripted `Spare()` calls will not trigger it.
+]]
+BeforeDamageCalculation =
+[[
+Happens before the damage calculation the moment you press Z when attacking. You can easily use `SetDamage()` in this function. This is also the best place to initiate a dodge animation, if you want such a thing.
+]]
+BeforeDamageValues =
+[[
+Happens before the damage UI is displayed on the monster (the life bar and the damage number) and before the hp changing. You can still change the target with `Player.ChangeTarget(targetNumber)` in this function, but you *can not* use `SetDamage` here.
+The argument `damage` is equal to the incoming damage the enemy is about to take.
+Note that this damage has __not__ been applied yet, unlike in `HandleAttack`.
+]]
+HandleCustomCommand =
+[[
+Happens when you select an Act command on this monster. `command` will be the same as how you defined it in the `commands` list, except it will be __IN ALL CAPS__. Intermediate example below, showing how you can use it and spice it up a little.
+]]
+UpdateW =
+[[
+This function is called every frame (usually at 60FPS) while monsters are attacking (the defense step).
+
+That's pretty much it. Update your bullets here - more on bullet creation and control is on the @(cyf-api-projectile)API - Projectile Management page.
+]]
+EndingWave =
+[[
+This function is called just before the wave ends. It allows you to easily reset some variables and other such things.
+]]
+OnHit =
+[[
+Every time a bullet collides with a player, this function gets called from the script that created the projectile. The bullet object in this function can be modified if you feel like it. For more information on the bullet object, see the section @(cyf-api-projectile)Projectile Management.
+If you implement this function in your script, you have to manually define what should happen after bullet collision. This is what allows you to create orange, cyan and green projectiles, and much much more. If you don't implement this function in your script, it'll stick to the default of dealing 3 damage on hit.
+]]

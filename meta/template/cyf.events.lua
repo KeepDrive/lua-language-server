@@ -28,6 +28,10 @@ function EnemyDialogueEnding() end
 ---@script E
 function DefenseEnding() end
 
+---#DES 'HandleSpare'
+---@script E
+function HandleSpare() end
+
 ---#DES 'HandleFlee'
 ---@script E
 ---@param success boolean
@@ -52,6 +56,11 @@ function Update() end
 ---#DES 'BeforeDeath'
 ---@script E
 function BeforeDeath() end
+
+---#DES 'OnTextDisplay'
+---@script E
+---@param text Text
+function OnTextDisplay() end
 
 ---#DES 'HandleAttack'
 ---@script M
@@ -91,8 +100,3 @@ function EndingWave() end
 ---#DES 'OnHit'
 ---@param bullet bullet
 function OnHit(bullet) end
-
----#DES 'OnTextAdvance'
----@param text Text
----@param final boolean
-function OnTextAdvance(bullet, final) end
