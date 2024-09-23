@@ -59,9 +59,9 @@ function SetAlmightyGlobal(your_variable_name, value) end
 ---@nodiscard
 function GetAlmightyGlobal(your_variable_name) end
 
----#DES 'SetFrameBaseMovement'
+---#DES 'SetFrameBasedMovement'
 ---@param bool boolean
-function SetFrameBaseMovement(bool) end
+function SetFrameBasedMovement(bool) end
 
 ---#DES 'SetAction'
 ---@param action "FIGHT"|"ACT"|"ITEM"|"MERCY"
@@ -108,7 +108,7 @@ function RandomEncounterText() end
 
 ---#DES 'SetButtonLayer'
 ---@script E
----@param layer layer|string
+---@param layer layer|"default"|string
 function SetButtonLayer(layer) end
 
 ---#DES 'CreateEnemy'
